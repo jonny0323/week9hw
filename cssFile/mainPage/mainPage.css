@@ -1,0 +1,16 @@
+#container{
+    display: flex;
+    flex-direction: row;
+
+}
+#first{
+    background-color: red;
+    width:20%;
+    height:100vh;
+}
+#second{
+    background-color: blue;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
