@@ -2,53 +2,47 @@
     height:100vh;
     width: 100vw;
     background-color: blue;
-}
-main{
-    margin:100px 400px 0 400px;
-    background-color: red;
-    width: calc(100vw - 800px);
-    height: calc(100vh - 300px);
-}
-#first{
-    width:100%;
-    height: 70%;
-    background-color: yellow;
-}
-.button{
-    width:70%;
-    height:20%;
-    margin:0 0 0 120px;
-    
-}
-.button_2{
-    margin:0 0 0 30px;
-    width:100%;
-    height:50%;
-   
-}
-
-.inlineBlock{
-    display: inline-block;
-    width:30%;
-    height:30%;
-    
-}
-
-#flex{
     display: flex;
-    direction: row;
+    flex-direction: column;
+    align-items: center;
 }
-
-#id{
-    font-size: 50px;
-}
-#pw{
-    font-size: 50px;
-}
-
-
-
-#second{
+#space{
+    height:20%;
     width:100%;
-    height: 30%;
 }
+#login_button_div{
+    width:50%;
+    height:50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 40px;
+    
+    
+}
+.login_button{
+    width:calc(100% + 16px);
+    height:30%;
+    font-size: 40px;
+
+}
+#find_button_div{
+    width:80%;
+    height:20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-content: space-evenly;
+}
+.find_button{
+    color:black;
+}
+
+
+
+
+
+
+
+
+

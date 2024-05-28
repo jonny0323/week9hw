@@ -2,51 +2,47 @@
     height:100vh;
     width: 100vw;
     background-color: blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-main{
-    margin:100px 400px 0 400px;
-    background-color: red;
-    width: calc(100vw - 800px);
-    height: calc(100vh - 300px);
-}
-#first{
-    width:100%;
-    height: 70%;
-    background-color: yellow;
-    font-size: 50px;
-    text-align: center;
-}
-.button{
-    width:60%;
+#space{
     height:20%;
-    
-    
-}
-.button_2{
-    
-    width:60%;
-    height:20%;
-    margin:0 0 0 150px;
-    
-}
-.selct_button{
-    width:30%;
-    height:10%;
-    margin:0 0 0 120px;
-    
-}
-.selct_button2{
-    width:30%;
-    height:10%;
-}
-
-
-
-
-
-
-
-#second{
     width:100%;
-    height: 30%;
 }
+#login_button_div{
+    width:50%;
+    height:50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 40px;
+    
+    
+}
+.login_button{
+    width:calc(100% + 16px);
+    height:30%;
+    font-size: 40px;
+
+}
+#find_button_div{
+    width:80%;
+    height:20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-content: space-evenly;
+}
+.find_button{
+    color:black;
+}
+
+
+
+
+
+
+
+
+
