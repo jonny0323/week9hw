@@ -1,3 +1,6 @@
+
+var year=2024;
+
 function logInEvent()
     {
         var id_value=document.getElementById("id").value;

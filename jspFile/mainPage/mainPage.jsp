@@ -8,7 +8,7 @@
 
 
 <%
-
+    
    
 
 
@@ -25,158 +25,57 @@
 </head>
 <body>
     <div id="container">
-        <div id="first">
-            <div>
-                2024년
+        <div id="left_container">
+            <div id="year_container">
+                2024
             </div>
-            <div>
-                <input type=button class=button_2 value="<">
-                <input type=button class=button_2 value=">">
-
-            </div>
-            <div>
+            <div id=select_button_div>
+                <input type="button" value="<" onclick=yearMoveEvent(1)>
+                <input type="button" value=">" onclick=yearMoveEvent(2)>
             </div>
 
 
-            
+            <div>
+            </div>
         </div>
         
-        <div id="second">
+        <div id="right_container">
             
             <div>
-                <input type=button class=button_2 value="1">
-                <input type=button class=button_2 value="2">
-                <input type=button class=button_2 value="3">
-                <input type=button class=button_2 value="4">
-                <input type=button class=button_2 value="5">
-                <input type=button class=button_2 value="6">
-                <input type=button class=button_2 value="8">
-                <input type=button class=button_2 value="9">
-                <input type=button class=button_2 value="10">
-                <input type=button class=button_2 value="11">
-                <input type=button class=button_2 value="12">
+                <input type=button class=month_button value="1" onclick=monthMoveEvent(1) id="month_1"> 
+                <input type=button class=month_button value="2" onclick=monthMoveEvent(2) id="month_2">
+                <input type=button class=month_button value="3" onclick=monthMoveEvent(3) id="month_3">
+                <input type=button class=month_button value="4" onclick=monthMoveEvent(4) id="month_4">
+                <input type=button class=month_button value="5" onclick=monthMoveEvent(5) id="month_5">
+                <input type=button class=month_button value="6" onclick=monthMoveEvent(6) id="month_6">
+                <input type=button class=month_button value="7" onclick=monthMoveEvent(7) id="month_7">
+                <input type=button class=month_button value="8" onclick=monthMoveEvent(8) id="month_8">
+                <input type=button class=month_button value="9" onclick=monthMoveEvent(9) id="month_9">
+                <input type=button class=month_button value="10" onclick=monthMoveEvent(10) id="month_10">
+                <input type=button class=month_button value="11" onclick=monthMoveEvent(11) id="month_11">
+                <input type=button class=month_button value="12" onclick=monthMoveEvent(12) id="month_12">
+            </div>
+            <div id="space">
             </div>
 
-            <div>
-                <button >
-                    1
-                   
-                </button>
-                <button >
-                    2
-                   
-                </button>
-                <button >
-                    3
-                   
-                </button>
-                <button >
-                    4
-                   
-                </button>
-                <button >
-                    5
-                   
-                </button>
-                <button >
-                    6
-                   
-                </button>
-                <button >
-                    7
-                   
-                </button>
-            </div>
-            <div>
-                <button >
-                    8
-                   
-                </button>
-                <button >
-                    9
-                   
-                </button>
-                <button >
-                    10
-                   
-                </button>
-                <button >
-                    11
-                   
-                </button>
-                <button >
-                    12
-                   
-                </button>
-                <button >
-                    13
-                   
-                </button>
-                <button >
-                    14
-                   
-                </button>
-            </div>
-            <div>
-                <button >
-                    15
-                   
-                </button>
-                <button >
-                    16
-                   
-                </button>
-                <button >
-                    17
-                   
-                </button>
-                <button >
-                    18
-                   
-                </button>
-                <button >
-                    19
-                   
-                </button>
-                <button >
-                    20
-                   
-                </button>
-                <button >
-                    21
-                   
-                </button>
-            </div>
-           <div>
-                <button >
-                    22
-                   
-                </button>
-                <button >
-                    23
-                   
-                </button>
-                <button >
-                    24
-                   
-                </button>
-                <button >
-                    25
-                   
-                </button>
-                <button >
-                    26
-                   
-                </button>
-                <button >
-                    27
-                   
-                </button>
-                <button >
-                    28
-                   
-                </button>
-            </div>
-        </div>
+
+
+             <table>
+        <thead id="table">
+            <tr>
+                <th>일</th>
+                <th>월</th>
+                <th>화</th>
+                <th>수</th>
+                <th>목</th>
+                <th>금</th>
+                <th>토</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
     </div>
+    <script src="../../jsFile/mainPage/mainPage.js"></script>
 </body>
