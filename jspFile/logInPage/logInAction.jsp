@@ -4,7 +4,8 @@
 <%@ page import="java.sql.PreparedStatement" %>
 
 <%@ page import="java.sql.ResultSet" %>
-
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 
 
 <%
@@ -49,11 +50,21 @@
 
      //가져온 Table 에서 row 1개를 읽어 (jsp 문법이라는게 문제)
     if(result.next()){
+    Date date=new Date();
+    SimpleDateFormat simpleDate=new SimpleDateFormat("yyyy-MM-dd");
+    String strDate = simpleDate.format(date);
+    String year_date = strDate.substring(0, 4);
+    String month_date = strDate.substring(5, 7);
+    String day_date = strDate.substring(8, 10);
+
+
+
+
         
     %>
     <script>
         alert("로그인 성공!")
-        location.href="../mainPage/mainPage.jsp"
+        location.href = "../mainPage/mainPage.jsp?year=<%= year_date %>&month=<%= month_date %>&day=<%= day_date %>";
     </script>
     <%
     }else{

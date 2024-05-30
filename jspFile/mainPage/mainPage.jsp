@@ -9,8 +9,9 @@
 
 <%
     request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
-    String idValue=request.getParameter("id_value");
-    String pwValue=request.getParameter("pw_value");
+    String yearValue=request.getParameter("year");
+    String monthValue=request.getParameter("month");
+    String dayValue=request.getParameter("day");
     
     
 
@@ -80,5 +81,19 @@
         </tbody>
     </table>
     </div>
-    <script src="../../jsFile/mainPage/mainPage.js"></script>
+
+
+    <script>
+        var year=<%=yearValue %>
+        var month=<%=monthValue %>
+        var now_day=<%= dayValue%>
+
+    </script>
+
+    
+    <script src="../../jsFile/mainPage/mainPage.js">
+    
+    
+    
+    </script>
 </body>
