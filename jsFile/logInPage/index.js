@@ -10,7 +10,7 @@ function logInEvent()
             return;
         }   
         if(pw_value){
-           location.href = "logInActionPage.jsp";
+           location.href = "logInAction.jsp?id_value="+document.getElementById('id').value+"&pw_value="+document.getElementById('pw').value;
         }
         else{
             alert("비밀번호를 입력해주세요")

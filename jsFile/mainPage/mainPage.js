@@ -1,5 +1,7 @@
 var day=31;
+var month=1;
 var ear=1;
+var now_day=1;
 
 function yearMoveEvent(e){
     if(e==1){
@@ -29,18 +31,17 @@ window.onload = () => {
     }
     ear=year;
     document.getElementById('year_container').innerText = year;
-};
 
 
-function monthMoveEvent(e){
-    //location.href = `/week9hw/jspFile/mainPage/mainPage.jsp?year=` + ear.toString()+'&month='+e.toString();
-
+    // 페이지 들어오자 해줘야하는 내용
     document.getElementById("month_"+e).style.backgroundColor="blue"
     for(var i=1;i<=12;i++){
         if(i!=e){
             document.getElementById("month_"+i).style.backgroundColor="white"
         }
+        
     }
+    month=e;
 
     if(
         e == 1 || 
@@ -59,10 +60,13 @@ function monthMoveEvent(e){
     else if(e == 4 || e == 6 || e == 9 || e == 11 ){
         day=30;
     }
-    
 
     makeDay(day)
+};
 
+
+function monthMoveEvent(e){
+    location.href = `/week9hw/jspFile/mainPage/mainPage.jsp?year=` + ear.toString()+'&month='+ e.toString();
 }
 
 function makeDay(day){
@@ -78,6 +82,7 @@ function makeDay(day){
     daysOfWeek.forEach(day => {
         var th = document.createElement("th");
         th.innerText = day;
+        th.classList.add('day_div');
         headerRow.appendChild(th);
     });
 
@@ -92,10 +97,12 @@ function makeDay(day){
         }
         var td = document.createElement("th");
         td.innerText = i;
-        td.style.height="110px";
-        td.onclick=function(){
-            location.href="../DetailPage/detailPage.jsp";
+        td.classList.add('date_div');
 
+        // Evnet 객체 응용했음
+        td.onclick = function(e) {
+            var dayIndex = e.target.innerText
+            location.href="../DetailPage/detailPage.jsp?main="+ear+'&month='+month+'&day='+ dayIndex;
         }
 
         tr.appendChild(td);
@@ -103,4 +110,7 @@ function makeDay(day){
     }
 
 
+}
+
+function dayMoveEvent() {
 }

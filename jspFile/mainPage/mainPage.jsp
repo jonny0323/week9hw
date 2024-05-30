@@ -8,8 +8,11 @@
 
 
 <%
+    request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
+    String idValue=request.getParameter("id_value");
+    String pwValue=request.getParameter("pw_value");
     
-   
+    
 
 
 

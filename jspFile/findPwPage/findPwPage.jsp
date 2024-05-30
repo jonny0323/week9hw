@@ -14,7 +14,7 @@
         <div id="space">
         </div>
         <button  id="login_button_div">
-            <input type=text name="name_value" class="login_button" id="name" placeholder="아이디" maxlength="20"> 
+            <input type=text name="name_value" class="login_button" id="id" placeholder="아이디" maxlength="20"> 
             <input type=text name="tell_value" class="login_button" id="tell" placeholder="전화번호" oninput="autoHyphen2(this)" maxlength="13" autofocus >
             <p onclick="findIdEvent()"  class="login_button" >
                 비밀번호 찾기

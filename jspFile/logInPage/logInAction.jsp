@@ -11,8 +11,12 @@
 
     // 전 페이지에서의 값을 받아오는 것 과정(이 과정은 Delete , Update , INSERT 과정때 필요하다.)
     request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
-    String nameValue=request.getParameter("name_value");
-    String tellValue=request.getParameter("tell_value");
+    String idValue=request.getParameter("id_value");
+    String pwValue=request.getParameter("pw_value");
+
+
+
+
 
     //위에서 받아온 값으로 데이터베이스 통신
    
@@ -27,14 +31,13 @@
 
 
     //치고자 싶은 명령어!!
-    String sql="SELECT id FROM account WHERE name = ?  AND tell = ? ;";
+    String sql="SELECT id, pw FROM account WHERE id = ?  AND pw = ? ;";
     PreparedStatement query = connect.prepareStatement(sql);
-    query.setString(1,nameValue);
-    query.setString(2,tellValue);
+    query.setString(1,idValue);
+    query.setString(2,pwValue);
 
-    
+   
 
-    //db로 전송하기 (UPDATE INSERT DELETE) 때 사용한다
 
 
 
@@ -42,24 +45,27 @@
     //db로 부터 값 받기 (SELECT 일때 사용)
     ResultSet result = query.executeQuery();
 
-    if(result.next()){
-    %>    
-        <script>
-            alert("아이디는 '<%=result.getString(1)%>' 입니다");
-            location.href="../logInPage/index.jsp"
-        </script>
 
+
+     //가져온 Table 에서 row 1개를 읽어 (jsp 문법이라는게 문제)
+    if(result.next()){
+        
+    %>
+    <script>
+        alert("로그인 성공!")
+        location.href="../mainPage/mainPage.jsp"
+    </script>
     <%
     }else{
     %>
-        <script>
-            alert("매칭되는 아이디가 없습니다");
-            location.href="findIdPage.jsp"
-        </script>
-
+    <script>
+        alert("아이디 혹은 비밀번호가 틀렸습니다")
+        location.href="index.jsp"
+       
+    </script>
     <%
     }
-    %>
+%>
 
 
 <head>
@@ -69,6 +75,11 @@
 </head>
 <body>
     <%-- <p> 아이디 : <%=idValue%> </p> --%>
+
+
+
+
+
 
     
 </body>

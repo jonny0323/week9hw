@@ -6,6 +6,18 @@
 <%@ page import="java.sql.ResultSet" %>
 
 
+<%
+
+
+    request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
+    String yearValue=request.getParameter("year");
+    String monthValue=request.getParameter("month");
+    String dayValue=request.getParameter("day");
+
+
+
+%>
+
 
 
 <head>
@@ -30,7 +42,8 @@
         </main>
 
         <footer>
-            <div>
+            <div id="show_day">
+                <%=yearValue%>년<%=monthValue%>월<%=dayValue%>일 
             </div>
             <form action="../logInPage/index.jsp">
                 <input type="submit" id=main_button value="메인페이지로">

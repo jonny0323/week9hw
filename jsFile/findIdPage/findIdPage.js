@@ -7,7 +7,7 @@ function findIdEvent()
             return;
         }   
         if((tell_value.length)==13){
-           location.href = "findIdAction.jsp";
+           location.href = "findIdAction.jsp?name_value="+document.getElementById("name").value+"&tell_value="+document.getElementById("tell").value;
         }
         else{
             alert("전화번호 형식이 잘못되었습니다")

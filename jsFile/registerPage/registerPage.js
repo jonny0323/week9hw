@@ -8,9 +8,9 @@ const autoHyphen2 = (target) => {
 }
 
 function checkId() {
-    var userId = document.getElementById("userId").value;
-    if (userId) {
-        window.open('idCheckActionPage.jsp?userId=' + userId, 'IDCheck', 'width=400,height=200');
+    var id = document.getElementById("id").value;
+    if (id) {
+        window.open('idCheckAction.jsp?id=' + id, 'IDCheck', 'width=400,height=200');
     } else {
         alert("아이디를 입력하세요.");
     }
@@ -38,7 +38,7 @@ function select_department(e){
     else{
         document.getElementById("plan").style.backgroundColor="white";
         document.getElementById("develpe").style.backgroundColor="grey";
-        department=1;
+        department=2;
     }
 
 }
@@ -80,14 +80,47 @@ function register(){
          return;
     }
     
+    // var passRule = /^[A-Za-z0-9]{6,12}$/;//숫자와 문자 포함 형태의 6~12자리 이내의 암호 정규식 
+    // if(!passRule.test($("input[id='PASS']").val())) { 
+    //     return;
+    // }
 
     
-    if(!(department==1 || department==1)){   // 1 or 2 중에 있는지
+    if(!(department==1 || department==2)){   // 1 or 2 중에 있는지
         alert("부서를 선택해주세요");
         return;
     }
 
     else{
+        alert("회원가입 성공!")
+        if(position==1){
+            if(department==1){
+                location.href = "registerAction.jsp?id="+id_value+"&pw="+pw_value+"&name="+name_value+"&position=leader&tell="+tell_value+"&department=plan"
 
+
+            }
+            else{
+                location.href = "registerAction.jsp?id="+id_value+"&pw="+pw_value+"&name="+name_value+"&position=leader&tell="+tell_value+"&department=develop"
+
+
+            }
+
+
+        }
+        else{
+            if(department==1){
+                location.href = "registerAction.jsp?id="+id_value+"&pw="+pw_value+"&name="+name_value+"&position=member&tell="+tell_value+"&department=plan"
+
+
+            }
+            else{
+
+                location.href = "registerAction.jsp?id="+id_value+"&pw="+pw_value+"&name="+name_value+"&position=member&tell="+tell_value+"&department=develop"
+
+            }
+
+        }
+    
+    
     }
 }

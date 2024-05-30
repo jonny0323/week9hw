@@ -1,13 +1,13 @@
 function findIdEvent()
     {
-        var name_value=document.getElementById("name").value;
+        var id_value=document.getElementById("id").value;
         var tell_value=document.getElementById("tell").value;
-        if(!name_value){
-            alert("이름을 입력해주세요");
+        if(!id_value){
+            alert("아이디를 입력해주세요");
             return;
         }   
         if((tell_value.length)==13){
-           location.href = "findPwAction.jsp";
+           location.href = "findPwAction.jsp?id_value="+document.getElementById("id").value+"&tell_value="+document.getElementById("tell").value;
         }
         else{
             alert("전화번호 형식이 잘못되었습니다")
