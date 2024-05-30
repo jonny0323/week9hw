@@ -53,7 +53,7 @@
     }else{
     %>
         <script>
-            alert("매칭되는 아이디가 없습니다");
+            alert("매칭되는 <%=nameValue%><%=tellValue%>아이디가 없습니다");
             location.href="findIdPage.jsp"
         </script>
 

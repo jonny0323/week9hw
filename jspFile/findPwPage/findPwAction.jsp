@@ -11,8 +11,8 @@
 
     // 전 페이지에서의 값을 받아오는 것 과정(이 과정은 Delete , Update , INSERT 과정때 필요하다.)
     request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
-    String idValue=request.getParameter("id");
-    
+    String idValue=request.getParameter("id_value");
+    String tellValue=request.getParameter("tell_value");
 
     //위에서 받아온 값으로 데이터베이스 통신
    
@@ -27,9 +27,10 @@
 
 
     //치고자 싶은 명령어!!
-    String sql="SELECT id FROM account WHERE id = ?;";
+    String sql="SELECT pw FROM account WHERE id = ?  AND tell = ? ;";
     PreparedStatement query = connect.prepareStatement(sql);
     query.setString(1,idValue);
+    query.setString(2,tellValue);
 
    
 
@@ -42,28 +43,26 @@
     ResultSet result = query.executeQuery();
 
     if(result.next()){
-    %>
+    %>    
+        <script>
+            alert("비밀번호는 '<%=result.getString(1)%>' 입니다");
+            location.href="../logInPage/index.jsp"
+        </script>
 
-    <body>
-    <p><%= result.getString(1)%>는 이미 사용 중인 아이디 입니다.</p>
-    </body>
 
     <%
     }else{
-        %>
+    %>
+        <script>
+            alert("매칭되는 아이디가 없습니다");
+            location.href="findPwPage.jsp"
+        </script>
 
-    <body>
-    <p>아이디 사용 가능합니다.</p>
-    </body>
-    
+
 
     <%
-
-
     }
-
-
-%>
+    %>
 
 
 <head>
