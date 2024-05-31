@@ -37,14 +37,12 @@
     query.setString(1,idValue);
     query.setString(2,pwValue);
 
-   
-
-
-
-
-
     //db로 부터 값 받기 (SELECT 일때 사용)
     ResultSet result = query.executeQuery();
+
+
+
+
 
 
 
@@ -56,8 +54,22 @@
     String year_date = strDate.substring(0, 4);
     String month_date = strDate.substring(5, 7);
     String day_date = strDate.substring(8, 10);
+    session.setAttribute("session_id", idValue);
+    
+    String sql1="SELECT position FROM account WHERE id = ?  AND pw = ? ;";
+    PreparedStatement query1 = connect.prepareStatement(sql1);
+    query1.setString(1,idValue);
+    query1.setString(2,pwValue);
 
-
+    //db로 부터 값 받기 (SELECT 일때 사용)
+    ResultSet result1 = query1.executeQuery();
+    result1.next();
+     String position = result1.getString(1);
+        if ("leader".equals(position)){ 
+            session.setAttribute("position","leader");
+        } else {
+            session.setAttribute("position","member");
+        }
 
 
         

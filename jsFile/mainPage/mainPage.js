@@ -109,7 +109,7 @@ function makeDay(day){
         // Evnet 객체 응용했음
         td.onclick = function(e) {
             var dayIndex = e.target.innerText
-            location.href="../DetailPage/detailPage.jsp?main="+year+'&month='+month+'&day='+ dayIndex;
+            location.href="../DetailPage/detailPage.jsp?year="+year+'&month='+month+'&day='+ dayIndex;
         }
 
         tr.appendChild(td);
