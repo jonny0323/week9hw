@@ -5,8 +5,7 @@
 
 <%@ page import="java.sql.ResultSet" %>
 
-
-
+<%@ page import="java.util.ArrayList" %>
 <%
     request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
     String yearValue=request.getParameter("year");
@@ -17,34 +16,37 @@
     Class.forName("org.mariadb.jdbc.Driver");
     Connection connect = DriverManager.getConnection("jdbc:mariadb://localhost:3306/9hw","stageus","1234");
 
+    String sql;
+    PreparedStatement query;
 
-    if ("leader".equals(position)){
-        
-    String sql="SELECT COUNT(*) FROM schedule WHERE date = ? ;";
-    PreparedStatement query = connect.prepareStatement(sql);
-    query.setString(1,idValue);
-    query.setString(2,pwValue);
-
-
+    if ("member".equals(position)) {
+        // sql = "SELECT COUNT(*) FROM schedule WHERE YEAR(datetime) = ? AND MONTH(datetime) = ? AND account_id = ?;";
+        sql = "SELECT DATE_FORMAT(datetime, '%d') AS date, COUNT(*) AS count FROM schedule WHERE YEAR(datetime) = ? AND MONTH(datetime) = ? AND account_id = ? GROUP BY DATE(datetime);";
+        query = connect.prepareStatement(sql);
+        query.setString(1, yearValue);
+        query.setString(2, monthValue);
+        query.setString(3, (String) session.getAttribute("session_id"));
+    } else {
+        sql = "SELECT DATE_FORMAT(datetime, '%d') AS date, COUNT(*) AS count FROM schedule s JOIN account a ON s.account_id = a.id WHERE YEAR(s.datetime) = ? AND MONTH(s.datetime) = ? AND a.department = ? GROUP BY DATE(datetime);";
+        query = connect.prepareStatement(sql);
+        query.setString(1, yearValue);
+        query.setString(2, monthValue);
+        query.setString(3, (String) session.getAttribute("department"));
     }
-
-
-
-    else{
-    String sql="SELECT id, pw FROM account WHERE id = ?  AND pw = ? ;";
-    PreparedStatement query = connect.prepareStatement(sql);
-    query.setString(1,idValue);
-    query.setString(2,pwValue);
-
-
-
-    }
-
+    
     ResultSet result = query.executeQuery();
+    ArrayList<ArrayList<String>> list_data = new ArrayList<ArrayList<String>>();
+    while (result.next()) {
+        ArrayList<String> tmp = new ArrayList<String>();
+        tmp.add(result.getString(1)); // 결과를 ArrayList에 추가
+        tmp.add(result.getString(2)); // 결과를 ArrayList에 추가
+        list_data.add(tmp);
+    }
 
-
+    result.close();
+    query.close();
+    connect.close();
 %>
-
 
 <head>
     <meta charset="UTF-8">
@@ -70,19 +72,12 @@
     
                 if ("leader".equals(position)){
 %>
-    <input type="button" value="팀원꺼 보기/끄기">
-
-
+    <input type="button" value="팀원꺼 보기" onclick=seeAllEvent(1)>
+    <input type="button" value="팀원꺼 끄기" onclick=seeAllEvent(2)>
 
 <%
     }
 %>
-
-
-
-
-
-
             <div>
             </div>
         </div>
@@ -131,9 +126,6 @@
         var year=<%=yearValue %>
         var month=<%=monthValue %>
         var now_day=<%= dayValue%>
-
-    
-    
     
     
 var day=31;
@@ -154,13 +146,14 @@ function yearMoveEvent(e){
     location.href = `/week9hw/jspFile/mainPage/mainPage.jsp?year=` + year.toString();
 }
 
-
-
-
 window.onload = () => {
+
+    console.log("<%=query%>")
+    var reqData = <%=list_data%>
+    console.log(reqData)
     // var url = new URLSearchParams(location.search);
     // var year = url.get('year');
-    
+
 
     // if (!year) { 
     //     year = new Date().getFullYear();
@@ -170,15 +163,6 @@ window.onload = () => {
 
 
     // 페이지 들어오자 해줘야하는 내용
-
-
-
-
-
-
-
-
-
     document.getElementById("month_"+month).style.backgroundColor="blue"
     for(var i=1;i<=12;i++){
         if(i!=month){
@@ -219,8 +203,9 @@ function makeDay(day){
     var table = document.getElementById("table");
     table.innerHTML = "";
     var tr=document.createElement("tr")
-    var th=document.createElement("th")
+    var th=document.createElement("td")
 
+    // Table의 제목줄
     var headerRow = document.createElement("tr");
     var daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -233,9 +218,9 @@ function makeDay(day){
 
     table.appendChild(headerRow);
     
-
-
-
+    // Table의 내용 ( 날짜 )
+    var reqData = <%=list_data%>
+    
     for (var i = 1; i <= day; i++) {
         if(i%7==1){
             var tr = document.createElement("tr");
@@ -243,14 +228,31 @@ function makeDay(day){
         var td = document.createElement("th");
         td.innerText = i;
         td.classList.add('date_div');
-        
-        
-
-        // Evnet 객체 응용했음
         td.onclick = function(e) {
             var dayIndex = e.target.innerText
             location.href="../DetailPage/detailPage.jsp?year="+year+'&month='+month+'&day='+ dayIndex;
         }
+
+
+        var tt=document.createElement('p');
+        for(var j=0;j<reqData.length;j++){
+            if(reqData[j][0]==i){
+                tt.innerText=reqData[j][1];
+                td.appendChild(tt);
+                break;
+            }
+
+        }
+        console.log("test", tt)
+
+
+
+        
+        // Evnet 객체 응용했음
+        
+
+
+
 
         tr.appendChild(td);
         table.appendChild(tr);
@@ -261,53 +263,6 @@ function makeDay(day){
 
 function dayMoveEvent() {
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     </script>

@@ -56,7 +56,9 @@
     String day_date = strDate.substring(8, 10);
     session.setAttribute("session_id", idValue);
     
-    String sql1="SELECT position FROM account WHERE id = ?  AND pw = ? ;";
+
+
+    String sql1="SELECT position, department FROM account WHERE id = ?  AND pw = ? ;";
     PreparedStatement query1 = connect.prepareStatement(sql1);
     query1.setString(1,idValue);
     query1.setString(2,pwValue);
@@ -64,18 +66,16 @@
     //db로 부터 값 받기 (SELECT 일때 사용)
     ResultSet result1 = query1.executeQuery();
     result1.next();
-     String position = result1.getString(1);
-        if ("leader".equals(position)){ 
-            session.setAttribute("position","leader");
-        } else {
-            session.setAttribute("position","member");
-        }
+    String position = result.getString(1);
+    String department = result.getString(2);
 
+            session.setAttribute("position", "leader".equals(position) ?  "member": "leader");
+            session.setAttribute("department", "plan".equals(department) ?  "develop": "plan");
 
         
     %>
     <script>
-        alert("로그인 성공!")
+        alert("로그인 성공!<%= session.getAttribute("position") %><%= session.getAttribute("department") %>")
         location.href = "../mainPage/mainPage.jsp?year=<%= year_date %>&month=<%= month_date %>&day=<%= day_date %>";
     </script>
     <%

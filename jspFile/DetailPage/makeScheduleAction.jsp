@@ -14,21 +14,20 @@
     String monthValue=request.getParameter("month");
     String dayValue=request.getParameter("day");
     String dateTimeValue = yearValue + "-" + monthValue + "-" + dayValue + " " + timeValue;
-    String dateValue= yearValue + monthValue  + dayValue;
+   
 
     Class.forName("org.mariadb.jdbc.Driver");
     Connection connect = DriverManager.getConnection("jdbc:mariadb://localhost:3306/9hw","stageus","1234");
 
     // INSERT
-    String sql="INSERT INTO schedule (account_id,date,datetime,content) VALUES (?,?,?,?)" ;
+    String sql="INSERT INTO schedule (account_id,datetime,content) VALUES (?,?,?)" ;
     PreparedStatement query = connect.prepareStatement(sql);
     String sessionId = String.valueOf(session.getAttribute("session_id"));
 
     // Prepared state
     query.setString(1,sessionId);
-    query.setString(2,dateValue);
-    query.setString(3,dateTimeValue);
-    query.setString(4,textValue);
+    query.setString(2,dateTimeValue);
+    query.setString(3,textValue);
 
     // Execute1
     query.executeUpdate();
