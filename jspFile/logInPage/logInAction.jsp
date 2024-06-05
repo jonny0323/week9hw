@@ -2,34 +2,38 @@
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
-
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
-
-
 <%
 
-    // 전 페이지에서의 값을 받아오는 것 과정(이 과정은 Delete , Update , INSERT 과정때 필요하다.)
-    request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
+    // 전처리
+    request.setCharacterEncoding("utf-8");
     String idValue=request.getParameter("id_value");
     String pwValue=request.getParameter("pw_value");
+    //백엔드 예외처리
+    if(idValue.length()==0){
+        
+        %>
+        <script>
+        alert("아이디를 입력해주세요");
+        </script>
+        <%
+        return;
+    }
+    else if(pwValue.length()==0){
+        %>
+        <script>
+        alert("비밀번호를 입력해주세요");
+        </script>
+        <%
+       
+        return;
+    }
 
-
-
-
-
-    //위에서 받아온 값으로 데이터베이스 통신
-   
     //데이터베이스 통신
-     //여기서 에러시 톰캣 db connector가 없다 이 3개중에 있다.
-    //데이터베이스에서는 필수 이다!! 출입구 여는 느낌
     Class.forName("org.mariadb.jdbc.Driver");
     Connection connect = DriverManager.getConnection("jdbc:mariadb://localhost:3306/9hw","stageus","1234");
-
-
-
-
 
     //치고자 싶은 명령어!!
     String sql="SELECT id, pw FROM account WHERE id = ?  AND pw = ? ;";
@@ -39,12 +43,6 @@
 
     //db로 부터 값 받기 (SELECT 일때 사용)
     ResultSet result = query.executeQuery();
-
-
-
-
-
-
 
      //가져온 Table 에서 row 1개를 읽어 (jsp 문법이라는게 문제)
     if(result.next()){
@@ -56,8 +54,6 @@
     String day_date = strDate.substring(8, 10);
     session.setAttribute("session_id", idValue);
     
-
-
     String sql1="SELECT position, department FROM account WHERE id = ?  AND pw = ? ;";
     PreparedStatement query1 = connect.prepareStatement(sql1);
     query1.setString(1,idValue);
@@ -66,13 +62,12 @@
     //db로 부터 값 받기 (SELECT 일때 사용)
     ResultSet result1 = query1.executeQuery();
     result1.next();
-    String position = result.getString(1);
-    String department = result.getString(2);
+    String position = result1.getString("position");
+    String department = result1.getString("department");
 
-            session.setAttribute("position", "leader".equals(position) ?  "member": "leader");
-            session.setAttribute("department", "plan".equals(department) ?  "develop": "plan");
+    session.setAttribute("position", "leader".equals(position) ? "leader" : "member");
+    session.setAttribute("department", "plan".equals(department) ? "plan" : "develop");
 
-        
     %>
     <script>
         alert("로그인 성공!<%= session.getAttribute("position") %><%= session.getAttribute("department") %>")
@@ -97,12 +92,5 @@
     <title>Document</title>
 </head>
 <body>
-    <%-- <p> 아이디 : <%=idValue%> </p> --%>
-
-
-
-
-
-
     
 </body>

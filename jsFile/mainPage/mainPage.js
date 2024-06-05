@@ -121,3 +121,15 @@ function makeDay(day){
 
 function dayMoveEvent() {
 }
+
+function seeAllEvent(e) {
+    if(e==1){
+        location.href= `/week9hw/jspFile/mainPage/mainPage.jsp?year=` + year.toString()+'&month='+ e.toString()+'&see=1';
+    }
+    else{
+        location.href= `/week9hw/jspFile/mainPage/mainPage.jsp?year=` + year.toString()+'&month='+ e.toString()+'&see=2';
+    }
+
+
+
+}

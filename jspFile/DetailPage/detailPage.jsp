@@ -25,8 +25,7 @@
     Connection connect = DriverManager.getConnection("jdbc:mariadb://localhost:3306/9hw","stageus","1234");
     
     String sql="SELECT idx,account_id,datetime,content FROM schedule WHERE datetime= ? ;";
-
-
+    
     PreparedStatement query = connect.prepareStatement(sql);
     query.setString(1,dateValue);
 

@@ -12,6 +12,7 @@
     String monthValue=request.getParameter("month");
     String dayValue=request.getParameter("day");
     String position = (String) session.getAttribute("position");
+    String see=request.getParameter("see");
     
     Class.forName("org.mariadb.jdbc.Driver");
     Connection connect = DriverManager.getConnection("jdbc:mariadb://localhost:3306/9hw","stageus","1234");
@@ -27,12 +28,22 @@
         query.setString(2, monthValue);
         query.setString(3, (String) session.getAttribute("session_id"));
     } else {
-        sql = "SELECT DATE_FORMAT(datetime, '%d') AS date, COUNT(*) AS count FROM schedule s JOIN account a ON s.account_id = a.id WHERE YEAR(s.datetime) = ? AND MONTH(s.datetime) = ? AND a.department = ? GROUP BY DATE(datetime);";
-        query = connect.prepareStatement(sql);
-        query.setString(1, yearValue);
-        query.setString(2, monthValue);
-        query.setString(3, (String) session.getAttribute("department"));
-    }
+        if("2".equals(see)){
+            sql = "SELECT DATE_FORMAT(datetime, '%d') AS date, COUNT(*) AS count FROM schedule WHERE YEAR(datetime) = ? AND MONTH(datetime) = ? AND account_id = ? GROUP BY DATE(datetime);";
+            query = connect.prepareStatement(sql);
+            query.setString(1, yearValue);
+            query.setString(2, monthValue);
+            query.setString(3, (String) session.getAttribute("department"));
+        }
+        else{
+            sql = "SELECT DATE_FORMAT(datetime, '%d') AS date, COUNT(*) AS count FROM schedule s JOIN account a ON s.account_id = a.id WHERE YEAR(s.datetime) = ? AND MONTH(s.datetime) = ? AND a.department = ? GROUP BY DATE(datetime);";
+            query = connect.prepareStatement(sql);
+            query.setString(1, yearValue);
+            query.setString(2, monthValue);
+            query.setString(3, (String) session.getAttribute("department"));
+    
+        }
+}
     
     ResultSet result = query.executeQuery();
     ArrayList<ArrayList<String>> list_data = new ArrayList<ArrayList<String>>();
@@ -263,6 +274,19 @@ function makeDay(day){
 
 function dayMoveEvent() {
 }
+
+
+function seeAllEvent(e) {
+    if(e==1){
+        location.href= `/week9hw/jspFile/mainPage/mainPage.jsp?year=` + year.toString() + '&month=' + month.toString() + '&see=1';    }
+    else{
+        location.href= `/week9hw/jspFile/mainPage/mainPage.jsp?year=` + year.toString() + '&month=' + month.toString() + '&see=2';
+    }
+
+
+
+}
+
 
 
     </script>

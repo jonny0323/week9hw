@@ -2,11 +2,9 @@
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
-
 <%@ page import="java.sql.ResultSet" %>
-
-
-
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="java.util.regex.Matcher" %>
 <%
 
     // 전 페이지에서의 값을 받아오는 것 과정(이 과정은 Delete , Update , INSERT 과정때 필요하다.)
@@ -14,8 +12,32 @@
     String nameValue=request.getParameter("name_value");
     String tellValue=request.getParameter("tell_value");
 
+    if(nameValue.length()==0){
+        
+        %>
+        <script>
+        alert("아이디를 입력해주세요");
+        </script>
+        <%
+        return;
+    }
+    else if(tellValue.length()!=13){   // 정규표현식 ( 000-0000-0000 의 형식인지 )        
+        return;
+    }
+
+    String tellPattern = "^\\d{3}-\\d{4}-\\d{4}$";
+    Pattern pattern = Pattern.compile(tellPattern);
+    Matcher matcher = pattern.matcher(tellValue);
+
+    if (!matcher.matches()) {
+        return;
+    }
+
+
+
+
     //위에서 받아온 값으로 데이터베이스 통신
-   
+    
     //데이터베이스 통신
      //여기서 에러시 톰캣 db connector가 없다 이 3개중에 있다.
     //데이터베이스에서는 필수 이다!! 출입구 여는 느낌

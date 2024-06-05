@@ -2,17 +2,37 @@
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
-
 <%@ page import="java.sql.ResultSet" %>
-
-
-
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="java.util.regex.Matcher" %>
 <%
 
     // 전 페이지에서의 값을 받아오는 것 과정(이 과정은 Delete , Update , INSERT 과정때 필요하다.)
     request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
     String idValue=request.getParameter("id_value");
     String tellValue=request.getParameter("tell_value");
+
+
+    if(idValue.length()==0){
+        
+        %>
+        <script>
+        alert("아이디를 입력해주세요");
+        </script>
+        <%
+        return;
+    }
+    else if(tellValue.length()!=13){   // 정규표현식 ( 000-0000-0000 의 형식인지 )        
+        return;
+    }
+
+    String tellPattern = "^\\d{3}-\\d{4}-\\d{4}$";
+    Pattern pattern = Pattern.compile(tellPattern);
+    Matcher matcher = pattern.matcher(tellValue);
+
+    if (!matcher.matches()) {
+        return;
+    }
 
     //위에서 받아온 값으로 데이터베이스 통신
    
