@@ -8,9 +8,9 @@
 
 <%
     request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
-    String yearValue=request.getParameter("year");
-    String monthValue=request.getParameter("month");
-    String dayValue=request.getParameter("day");
+    String yearValue = request.getParameter("year");
+    String monthValue = request.getParameter("month");
+    String dayValue = request.getParameter("day");
 
     if (monthValue.length() == 1) {
         monthValue = "0" + monthValue;
@@ -20,17 +20,27 @@
     }
 
     String dateValue = yearValue + "-" + monthValue + "-" + dayValue;
-
+    String see = (String) session.getAttribute("see");
+    String idValue = (String) session.getAttribute("session_id");
     Class.forName("org.mariadb.jdbc.Driver");
-    Connection connect = DriverManager.getConnection("jdbc:mariadb://localhost:3306/9hw","stageus","1234");
-    
-    String sql="SELECT idx,account_id,datetime,content FROM schedule WHERE datetime= ? ;";
-    
-    PreparedStatement query = connect.prepareStatement(sql);
-    query.setString(1,dateValue);
+    Connection connect = DriverManager.getConnection("jdbc:mariadb://localhost:3306/9hw", "stageus", "1234");
 
-    ResultSet result = query.executeQuery();
+    String sql;
+    PreparedStatement query = null;
+    ResultSet result = null;
 
+
+   if ("yes".equals(see)) { // 수정됨
+            sql = "SELECT idx, account_id, DATE_FORMAT(datetime, '%H:%i') AS time, content FROM schedule WHERE DATE(datetime) = ? ORDER BY datetime ASC;"; // 수정됨
+            query = connect.prepareStatement(sql);
+            query.setString(1, dateValue);
+        } else {
+            sql = "SELECT idx, account_id, DATE_FORMAT(datetime, '%H:%i') AS time, content FROM schedule WHERE DATE(datetime) = ? AND account_id = ? ORDER BY datetime ASC;"; // 수정됨
+            query = connect.prepareStatement(sql);
+            query.setString(1, dateValue);
+            query.setString(2, idValue);
+        }
+        result = query.executeQuery();
 %>
 
 <head>
@@ -45,12 +55,19 @@
             <div id="schedule">
             <%
             while(result.next()){
+                 int idx = result.getInt("idx"); // 수정됨
                 %>
                   
                 <div>
-                    작성자:  <%=result.getString(2)%> 시간 : <%=result.getString(3)%> 내용 : <%=result.getString(4)%> 
-                    <input type="button" value="수정하기" onclick=changeScheduleEvent()>
-                    <input type="button" value="삭제하기" onclick=deleteScheduleEvent()>
+                    작성자: <%=result.getString("account_id")%> 시간: <%=result.getString("time")%> 내용: <%=result.getString("content")%>
+                    <% if(result.getString("account_id").equals(session.getAttribute("session_id"))){
+                        %>
+                    <input type="button" value="수정하기" onclick=changeScheduleEvent(<%= idx %>)>
+                    <input type="button" value="삭제하기" onclick=deleteScheduleEvent(<%= idx %>)>
+
+                        <%
+                    }
+                    %>
                 </div>
             <%
             }
@@ -94,14 +111,15 @@
         location.href = `makeScheduleAction.jsp?time=`+document.getElementById('time').value+"&text="+ document.getElementById('text').value+"&year=<%=yearValue%>&month=<%=monthValue%>&day=<%=dayValue%>"
     }
 
-    function changeScheduleEvent(){
-        window.open
+    function changeScheduleEvent(idx){
+        window.open(`changeSchedule.jsp?idx=` + idx, 'changeWindow', 'width=600,height=400');
 
     }
 
-    function deleteScheduleEvent(){
-        location.href='deleteSchedule.jsp'
-
+    function deleteScheduleEvent(idx){
+        if (confirm("정말 삭제하시겠습니까?")) {
+            location.href = 'deleteSchedule.jsp?year=<%=yearValue%>&month=<%=monthValue%>&day=<%=dayValue%>&idx='+idx;
+        }
     }
     </script>
 

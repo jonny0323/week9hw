@@ -46,34 +46,43 @@
 
      //가져온 Table 에서 row 1개를 읽어 (jsp 문법이라는게 문제)
     if(result.next()){
-    Date date=new Date();
-    SimpleDateFormat simpleDate=new SimpleDateFormat("yyyy-MM-dd");
-    String strDate = simpleDate.format(date);
-    String year_date = strDate.substring(0, 4);
-    String month_date = strDate.substring(5, 7);
-    String day_date = strDate.substring(8, 10);
-    session.setAttribute("session_id", idValue);
+        Date date=new Date();
+        SimpleDateFormat simpleDate=new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = simpleDate.format(date);
+        String year_date = strDate.substring(0, 4);
+        String month_date = strDate.substring(5, 7);
+        String day_date = strDate.substring(8, 10);
+        session.setAttribute("session_id", idValue);
+        
+        String sql1="SELECT position, department FROM account WHERE id = ?  AND pw = ? ;";
+        PreparedStatement query1 = connect.prepareStatement(sql1);
+        query1.setString(1,idValue);
+        query1.setString(2,pwValue);
+
+        //db로 부터 값 받기 (SELECT 일때 사용)
+        ResultSet result1 = query1.executeQuery();
+        result1.next();
+        String position = result1.getString("position");
+        String department = result1.getString("department");
+
+        session.setAttribute("position", "leader".equals(position) ? "leader" : "member");
+        session.setAttribute("department", "plan".equals(department) ? "plan" : "develop");
     
-    String sql1="SELECT position, department FROM account WHERE id = ?  AND pw = ? ;";
-    PreparedStatement query1 = connect.prepareStatement(sql1);
-    query1.setString(1,idValue);
-    query1.setString(2,pwValue);
+        if("leader".equals(position)){
+            session.setAttribute("see", "yes");
+        }
+        else{
+            session.setAttribute("see", "no");
 
-    //db로 부터 값 받기 (SELECT 일때 사용)
-    ResultSet result1 = query1.executeQuery();
-    result1.next();
-    String position = result1.getString("position");
-    String department = result1.getString("department");
+        }
+        
 
-    session.setAttribute("position", "leader".equals(position) ? "leader" : "member");
-    session.setAttribute("department", "plan".equals(department) ? "plan" : "develop");
-
-    %>
-    <script>
-        alert("로그인 성공!<%= session.getAttribute("position") %><%= session.getAttribute("department") %>")
-        location.href = "../mainPage/mainPage.jsp?year=<%= year_date %>&month=<%= month_date %>&day=<%= day_date %>";
-    </script>
-    <%
+        %>
+        <script>
+            alert("로그인 성공!<%= session.getAttribute("position") %><%= session.getAttribute("department") %><%= session.getAttribute("see") %>")
+            location.href = "../mainPage/mainPage.jsp?year=<%= year_date %>&month=<%= month_date %>&day=<%= day_date %>";
+        </script>
+        <%
     }else{
     %>
     <script>

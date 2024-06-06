@@ -12,7 +12,13 @@
     String monthValue=request.getParameter("month");
     String dayValue=request.getParameter("day");
     String position = (String) session.getAttribute("position");
-    String see=request.getParameter("see");
+    String see = (String) session.getAttribute("see");
+
+    %>
+        <script>
+            console.log("<%=see%>")
+        </script>
+    <%
     
     Class.forName("org.mariadb.jdbc.Driver");
     Connection connect = DriverManager.getConnection("jdbc:mariadb://localhost:3306/9hw","stageus","1234");
@@ -28,12 +34,12 @@
         query.setString(2, monthValue);
         query.setString(3, (String) session.getAttribute("session_id"));
     } else {
-        if("2".equals(see)){
+        if("no".equals(see)){
             sql = "SELECT DATE_FORMAT(datetime, '%d') AS date, COUNT(*) AS count FROM schedule WHERE YEAR(datetime) = ? AND MONTH(datetime) = ? AND account_id = ? GROUP BY DATE(datetime);";
             query = connect.prepareStatement(sql);
             query.setString(1, yearValue);
             query.setString(2, monthValue);
-            query.setString(3, (String) session.getAttribute("department"));
+            query.setString(3, (String) session.getAttribute("session_id"));
         }
         else{
             sql = "SELECT DATE_FORMAT(datetime, '%d') AS date, COUNT(*) AS count FROM schedule s JOIN account a ON s.account_id = a.id WHERE YEAR(s.datetime) = ? AND MONTH(s.datetime) = ? AND a.department = ? GROUP BY DATE(datetime);";
@@ -80,8 +86,7 @@
             <br>
             <br>
 <%
-    
-                if ("leader".equals(position)){
+    if ("leader".equals(position)){
 %>
     <input type="button" value="팀원꺼 보기" onclick=seeAllEvent(1)>
     <input type="button" value="팀원꺼 끄기" onclick=seeAllEvent(2)>
@@ -137,12 +142,7 @@
         var year=<%=yearValue %>
         var month=<%=monthValue %>
         var now_day=<%= dayValue%>
-    
-    
-var day=31;
-// var month=1;
-// var ear=1;
-// var now_day=1;
+        var day=31;
 
 function yearMoveEvent(e){
     if(e==1){
@@ -162,18 +162,9 @@ window.onload = () => {
     console.log("<%=query%>")
     var reqData = <%=list_data%>
     console.log(reqData)
-    // var url = new URLSearchParams(location.search);
-    // var year = url.get('year');
 
-
-    // if (!year) { 
-    //     year = new Date().getFullYear();
-    // }
-    // ear=year;
      document.getElementById('year_container').innerText = year;
 
-
-    // 페이지 들어오자 해줘야하는 내용
     document.getElementById("month_"+month).style.backgroundColor="blue"
     for(var i=1;i<=12;i++){
         if(i!=month){
@@ -181,8 +172,6 @@ window.onload = () => {
         }
         
     }
-    
-
     if(
         month == 1 || 
         month == 3 || 
@@ -233,38 +222,37 @@ function makeDay(day){
     var reqData = <%=list_data%>
     
     for (var i = 1; i <= day; i++) {
+
         if(i%7==1){
             var tr = document.createElement("tr");
         }
+
         var td = document.createElement("th");
-        td.innerText = i;
-        td.classList.add('date_div');
-        td.onclick = function(e) {
-            var dayIndex = e.target.innerText
+
+        var dateDiv = document.createElement("div");
+        dateDiv.classList.add('date_div');
+
+        // 날짜를 위한 span 생성 및 클릭 이벤트 추가
+        var dateSpan = document.createElement("span");
+        dateSpan.innerText = i;
+        dateSpan.onclick = function(e) {
+            var dayIndex = e.target.innerText;
             location.href="../DetailPage/detailPage.jsp?year="+year+'&month='+month+'&day='+ dayIndex;
         }
 
+        dateDiv.appendChild(dateSpan);
 
-        var tt=document.createElement('p');
+        // 일정 수를 위한 p 생성
+        var countP = document.createElement('p');
         for(var j=0;j<reqData.length;j++){
             if(reqData[j][0]==i){
-                tt.innerText=reqData[j][1];
-                td.appendChild(tt);
+                countP.innerText=reqData[j][1];
+                dateDiv.appendChild(countP);
                 break;
             }
-
         }
-        console.log("test", tt)
 
-
-
-        
-        // Evnet 객체 응용했음
-        
-
-
-
-
+        td.appendChild(dateDiv);
         tr.appendChild(td);
         table.appendChild(tr);
     }
@@ -278,13 +266,14 @@ function dayMoveEvent() {
 
 function seeAllEvent(e) {
     if(e==1){
-        location.href= `/week9hw/jspFile/mainPage/mainPage.jsp?year=` + year.toString() + '&month=' + month.toString() + '&see=1';    }
-    else{
-        location.href= `/week9hw/jspFile/mainPage/mainPage.jsp?year=` + year.toString() + '&month=' + month.toString() + '&see=2';
+    location.href = `/week9hw/jspFile/mainPage/setSeeAction.jsp?year=` + year.toString() + '&month=' + month.toString()+'&see=yes' // 수정됨
+        
     }
+    else if(e==2){
+    location.href = `/week9hw/jspFile/mainPage/setSeeAction.jsp?year=` + year.toString() + '&month=' + month.toString()+'&see=no' // 수정됨
 
-
-
+    }
+    
 }
 
 
