@@ -5,16 +5,11 @@
 
 <%@ page import="java.sql.ResultSet" %>
 
-
-
 <%
-
-    // 전 페이지에서의 값을 받아오는 것 과정(이 과정은 Delete , Update , INSERT 과정때 필요하다.)
     request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
-    String yearValue = request.getParameter("year");
-    String monthValue = request.getParameter("month");
-    String dayValue = request.getParameter("day");
-    String idxValue=request.getParameter("idx");
+    String timeValue = request.getParameter("time");
+    String textValue = request.getParameter("text");
+    String idxValue = request.getParameter("idx");
 
     String sessionId = (String) session.getAttribute("session_id");
     if (sessionId == null) {
@@ -24,19 +19,19 @@
     }
 
     Class.forName("org.mariadb.jdbc.Driver");
-    Connection connect = DriverManager.getConnection("jdbc:mariadb://localhost:3306/9hw","stageus","1234");
+    Connection connect = DriverManager.getConnection("jdbc:mariadb://localhost:3306/9hw", "stageus", "1234");
 
-    String sql="DELETE FROM schedule WHERE idx = ? ;";
+    String sql="UPDATE schedule SET datetime = CONCAT(DATE(datetime), ' ', ?) , content=? WHERE idx = ?;";
     PreparedStatement query = connect.prepareStatement(sql);
-    query.setString(1,idxValue);
+    
 
-   
+    query.setString(1,timeValue);
+    query.setString(2,textValue);
+    query.setString(3,idxValue);
 
-    //db로 전송하기 (UPDATE INSERT DELETE) 때 사용한다
     query.executeUpdate();
 
 %>
-
 
 <head>
     <meta charset="UTF-8">
@@ -45,8 +40,8 @@
 </head>
 <body>
     <script>
-        alert("삭제 성공");
-        location.href = 'detailPage.jsp?year=<%=yearValue%>&month=<%=monthValue%>&day=<%=dayValue%>';
-
+        alert("수정완료")
+        window.close(); 
+        console.log("<%=timeValue%>")
     </script>
 </body>

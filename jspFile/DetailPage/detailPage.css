@@ -1,7 +1,7 @@
 #container {
     display: flex;
     flex-direction: column;
-    background-color: blue;
+    background-color: #0F4C75;
     width: 100vw;
     height: 100vh;
 }
@@ -11,13 +11,13 @@ main {
     flex-direction: row;
     width: 100%;
     height: 80%;
-    background-color: red;
+    background-color: #8b9bbe;
 }
 
 #schedule {
     width: 70%;
     height: 100%;
-    background-color: green;
+    background-color: #8b9bbe;
 
 }
 

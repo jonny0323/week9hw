@@ -13,6 +13,13 @@
     String dayValue=request.getParameter("day");
     String position = (String) session.getAttribute("position");
     String see = (String) session.getAttribute("see");
+    
+    String sessionId = (String) session.getAttribute("session_id");
+    if (sessionId == null) {
+        // 세션 아이디가 없으면 접근 차단
+        response.sendRedirect("../logInPage/index.jsp"); // 로그인 페이지로 리디렉션
+        return;
+    }
 
     %>
         <script>
@@ -50,7 +57,6 @@
     
         }
 }
-    
     ResultSet result = query.executeQuery();
     ArrayList<ArrayList<String>> list_data = new ArrayList<ArrayList<String>>();
     while (result.next()) {
@@ -94,32 +100,29 @@
 <%
     }
 %>
-            <div>
-            </div>
+        <div>
         </div>
+    </div>
         
-        <div id="right_container">
-            
-            <div>
-                <input type=button class=month_button value="1" onclick=monthMoveEvent(1) id="month_1"> 
-                <input type=button class=month_button value="2" onclick=monthMoveEvent(2) id="month_2">
-                <input type=button class=month_button value="3" onclick=monthMoveEvent(3) id="month_3">
-                <input type=button class=month_button value="4" onclick=monthMoveEvent(4) id="month_4">
-                <input type=button class=month_button value="5" onclick=monthMoveEvent(5) id="month_5">
-                <input type=button class=month_button value="6" onclick=monthMoveEvent(6) id="month_6">
-                <input type=button class=month_button value="7" onclick=monthMoveEvent(7) id="month_7">
-                <input type=button class=month_button value="8" onclick=monthMoveEvent(8) id="month_8">
-                <input type=button class=month_button value="9" onclick=monthMoveEvent(9) id="month_9">
-                <input type=button class=month_button value="10" onclick=monthMoveEvent(10) id="month_10">
-                <input type=button class=month_button value="11" onclick=monthMoveEvent(11) id="month_11">
-                <input type=button class=month_button value="12" onclick=monthMoveEvent(12) id="month_12">
-            </div>
-            <div id="space">
-            </div>
-
-
-
-             <table>
+    <div id="right_container">
+        
+        <div>
+            <input type=button class=month_button value="1" onclick=monthMoveEvent(1) id="month_1"> 
+            <input type=button class=month_button value="2" onclick=monthMoveEvent(2) id="month_2">
+            <input type=button class=month_button value="3" onclick=monthMoveEvent(3) id="month_3">
+            <input type=button class=month_button value="4" onclick=monthMoveEvent(4) id="month_4">
+            <input type=button class=month_button value="5" onclick=monthMoveEvent(5) id="month_5">
+            <input type=button class=month_button value="6" onclick=monthMoveEvent(6) id="month_6">
+            <input type=button class=month_button value="7" onclick=monthMoveEvent(7) id="month_7">
+            <input type=button class=month_button value="8" onclick=monthMoveEvent(8) id="month_8">
+            <input type=button class=month_button value="9" onclick=monthMoveEvent(9) id="month_9">
+            <input type=button class=month_button value="10" onclick=monthMoveEvent(10) id="month_10">
+            <input type=button class=month_button value="11" onclick=monthMoveEvent(11) id="month_11">
+            <input type=button class=month_button value="12" onclick=monthMoveEvent(12) id="month_12">
+        </div>
+        <div id="space">
+    </div>
+    <table>
         <thead id="table">
             <tr>
                 <th>일</th>
@@ -132,12 +135,9 @@
             </tr>
         </thead>
         <tbody>
-            
         </tbody>
     </table>
     </div>
-
-
     <script>
         var year=<%=yearValue %>
         var month=<%=monthValue %>
@@ -226,9 +226,7 @@ function makeDay(day){
         if(i%7==1){
             var tr = document.createElement("tr");
         }
-
         var td = document.createElement("th");
-
         var dateDiv = document.createElement("div");
         dateDiv.classList.add('date_div');
 
@@ -239,7 +237,6 @@ function makeDay(day){
             var dayIndex = e.target.innerText;
             location.href="../DetailPage/detailPage.jsp?year="+year+'&month='+month+'&day='+ dayIndex;
         }
-
         dateDiv.appendChild(dateSpan);
 
         // 일정 수를 위한 p 생성
@@ -256,13 +253,7 @@ function makeDay(day){
         tr.appendChild(td);
         table.appendChild(tr);
     }
-
-
 }
-
-function dayMoveEvent() {
-}
-
 
 function seeAllEvent(e) {
     if(e==1){

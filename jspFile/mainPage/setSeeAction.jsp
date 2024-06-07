@@ -2,10 +2,7 @@
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
-
 <%@ page import="java.sql.ResultSet" %>
-
-
 
 <%
     request.setCharacterEncoding("utf-8"); //안해주면 전 페이지가 준 한글이 깨진다.
@@ -22,10 +19,6 @@
     else{
         session.setAttribute("see", "no");
     }
-    
-    
-
-    
 %>
 <head>
     <meta charset="UTF-8">

@@ -75,8 +75,6 @@
             session.setAttribute("see", "no");
 
         }
-        
-
         %>
         <script>
             alert("로그인 성공!<%= session.getAttribute("position") %><%= session.getAttribute("department") %><%= session.getAttribute("see") %>")

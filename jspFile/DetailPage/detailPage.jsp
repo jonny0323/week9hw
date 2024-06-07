@@ -12,6 +12,13 @@
     String monthValue = request.getParameter("month");
     String dayValue = request.getParameter("day");
 
+    String sessionId = (String) session.getAttribute("session_id");
+    if (sessionId == null) {
+        // 세션 아이디가 없으면 접근 차단
+        response.sendRedirect("../logInPage/index.jsp"); // 로그인 페이지로 리디렉션
+        return;
+    }
+
     if (monthValue.length() == 1) {
         monthValue = "0" + monthValue;
     }
@@ -20,6 +27,8 @@
     }
 
     String dateValue = yearValue + "-" + monthValue + "-" + dayValue;
+    String timeValue = yearValue + "-" + monthValue + "-" + dayValue+' ';
+    
     String see = (String) session.getAttribute("see");
     String idValue = (String) session.getAttribute("session_id");
     Class.forName("org.mariadb.jdbc.Driver");
@@ -47,7 +56,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../../cssFile/DetailPage/detailPage.css">
+    <link rel="stylesheet" href="detailPage.css">
 </head>
 <body>
     <div id="container">
@@ -112,8 +121,8 @@
     }
 
     function changeScheduleEvent(idx){
+        var time = document.getElementById('time').value;
         window.open(`changeSchedule.jsp?idx=` + idx, 'changeWindow', 'width=600,height=400');
-
     }
 
     function deleteScheduleEvent(idx){
